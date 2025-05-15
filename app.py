@@ -94,9 +94,9 @@ def generate():
     options = {
         'enable-local-file-access': '',
         'encoding': 'UTF-8',
-        'margin-top': '20mm',
-        'margin-bottom': '20mm',
-        'footer-html': str(Path("templates/footer.html").resolve())
+        'margin-top': '10mm',
+        'margin-bottom': '10mm',
+        'footer-html': f'file://{Path("templates/footer.html").resolve()}'
     }
 
     pdf_data = pdfkit.from_string(html, False, configuration=config, options=options)
