@@ -89,7 +89,8 @@ def generate():
 
     html = render_template("Opto.html", **context)
 
-    config = pdfkit.configuration(wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
+    config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+
     options = {
         'enable-local-file-access': '',
         'encoding': 'UTF-8',
