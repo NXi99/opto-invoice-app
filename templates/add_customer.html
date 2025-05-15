@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Klant Toevoegen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            padding: 40px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        form {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        label {
+            display: block;
+            margin: 12px 0 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            margin-top: 20px;
+            background: #0077cc;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 4px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #0077cc;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Nieuwe Klant Toevoegen</h2>
+
+    <form method="POST">
+        <label for="name">Naam van klant:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="address1">Adresregel 1:</label>
+        <input type="text" id="address1" name="address_line1">
+
+        <label for="address2">Adresregel 2:</label>
+        <input type="text" id="address2" name="address_line2">
+
+        <button type="submit">Klant Toevoegen</button>
+    </form>
+
+    <a href="/">&#8592; Terug naar hoofdmenu</a>
+</body>
+</html>

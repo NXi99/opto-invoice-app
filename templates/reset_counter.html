@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Factuurnummer Resetten</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            padding: 40px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        form {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+
+        button {
+            margin-top: 20px;
+            background: #0077cc;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .flash {
+            margin-bottom: 20px;
+            background: #ffe0e0;
+            padding: 10px;
+            border-radius: 6px;
+            color: #a00;
+        }
+
+        .nav {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .nav a {
+            color: #0077cc;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h2>Factuurnummer Resetten</h2>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('reset_counter') }}">
+        <label for="customer_id">Selecteer Klant:</label>
+        <select name="customer_id" id="customer_id" required>
+            {% for cid, info in customers.items() %}
+                <option value="{{ cid }}">{{ cid }} - {{ info.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="new_value">Nieuw nummer:</label>
+        <input type="number" name="new_value" id="new_value" value="0" min="0" required>
+
+        <button type="submit">Resetten</button>
+    </form>
+
+    <div class="nav">
+        <a href="{{ url_for('index') }}">&#8592; Terug naar Hoofdpagina</a>
+    </div>
+</body>
+</html>

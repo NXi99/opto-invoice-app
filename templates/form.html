@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Opto Facturatie</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            padding: 40px;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .nav-buttons a {
+            display: inline-block;
+            text-decoration: none;
+            background: #0077cc;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        form {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        label {
+            display: block;
+            margin: 12px 0 4px;
+        }
+
+        select, input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            margin-top: 20px;
+            background: #0077cc;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 4px;
+        }
+
+        .flash {
+            margin-bottom: 20px;
+            background: #ffe0e0;
+            padding: 10px;
+            border-radius: 6px;
+            color: #a00;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Factuur Aanmaken</h1>
+
+    <div class="nav-buttons">
+        <a href="{{ url_for('add_customer') }}">Klant Toevoegen</a>
+        <a href="{{ url_for('edit_customer') }}">Klant Bewerken of Verwijderen</a>
+        <a href="{{ url_for('reset_counter') }}">Factuurnummer Resetten</a>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('generate') }}">
+        <label for="customer_id">Selecteer Klant:</label>
+        <select name="customer_id" id="customer_id" required>
+            {% for cid, info in customers.items() %}
+                <option value="{{ cid }}">{{ cid }} - {{ info.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="description">Omschrijving:</label>
+        <input type="text" name="description" id="description" placeholder="Dienst of productbeschrijving" required>
+
+        <label for="amount_excl">Bedrag excl. BTW (€):</label>
+        <input type="number" name="amount_excl" id="amount_excl" placeholder="Bijv. 100.00" step="0.01" required>
+
+        <button type="submit">Genereer Factuur</button>
+    </form>
+
+</body>
+</html>

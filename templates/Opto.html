@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Factuur {{ invoice_number }}</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            line-height: 2;
+            margin: 30mm 20mm 30mm 20mm;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+        }
+
+        .header-row {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            margin-bottom: 25px;
+        }
+
+        .header-left {
+            display: table-cell;
+            vertical-align: top;
+            width: 70%;
+        }
+
+        .header-right {
+            display: table-cell;
+            vertical-align: top;
+            width: 30%;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .divider {
+            border-top: 2px solid #000;
+            margin: 25px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 100px;
+            page-break-inside: avoid;
+        }
+
+        th, td {
+            border: 1px solid #444;
+            padding: 10px;
+            text-align: left;
+        }
+
+        td:first-child {
+           text-align: left;
+         }
+
+        td:nth-child(2), td:nth-child(3), td:nth-child(4) {
+           text-align: right;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm 20mm 20mm 20mm;
+        }
+
+        .customer-row {
+            display: table;
+            table-layout: fixed;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        .customer-left {
+            display: table-cell;
+            vertical-align: top;
+            width: 70%;
+        }
+
+        .customer-right {
+            display: table-cell;
+            vertical-align: top;
+            width: 30%;
+            text-align: right;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Factuur</h1>
+
+    <div class="header-row">
+        <div class="header-left">
+            <strong>Opto Optiek B.V.</strong><br>
+            Schout Saelberngenplantsoen 10<br>
+            5911 EN Panningen
+        </div>
+        <div class="header-right">
+            <strong>Factuurdatum:</strong><br>
+            {{ invoice_date }}
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="customer-row">
+        <div class="customer-left">
+            <strong>{{ customer_name }}</strong><br>
+            t.a.v. vastgoedafdeling<br>
+            {{ customer_address_line1 }}<br>
+            {{ customer_address_line2 }}
+        </div>
+        <div class="customer-right">
+            <strong>Factuurnummer:</strong><br>
+            {{ invoice_number }}
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Omschrijving</th>
+                <th>Totaal excl. BTW</th>
+                <th>BTW 21%</th>
+                <th>Totaal incl. BTW</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ description }}</td>
+                <td>{{ amount_excl }}</td>
+                <td>{{ vat_amount }}</td>
+                <td>{{ amount_incl }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

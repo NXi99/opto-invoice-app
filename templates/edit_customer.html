@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Klant Bewerken of Verwijderen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            padding: 40px;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .customer-list {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        form {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            flex: 1;
+            padding: 10px;
+            font-size: 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .update-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .nav {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .nav a {
+            color: #0077cc;
+            text-decoration: none;
+        }
+
+        .flash {
+            margin-bottom: 20px;
+            background: #ffe0e0;
+            padding: 10px;
+            border-radius: 6px;
+            color: #a00;
+        }
+    </style>
+</head>
+<body>
+    <h2>Klant Bewerken of Verwijderen</h2>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="customer-list">
+        <form method="POST" action="{{ url_for('edit_customer') }}">
+            <label for="selected_id">Selecteer Klant:</label>
+            <select name="selected_id" id="selected_id" required>
+                {% for cid, info in customers.items() %}
+                    <option value="{{ cid }}">{{ cid }} - {{ info.name }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="name">Naam:</label>
+            <input type="text" name="name" id="name" placeholder="Nieuwe naam">
+
+            <label for="address_line1">Adresregel 1:</label>
+            <input type="text" name="address_line1" id="address_line1" placeholder="Nieuwe adresregel 1">
+
+            <label for="address_line2">Adresregel 2:</label>
+            <input type="text" name="address_line2" id="address_line2" placeholder="Nieuwe adresregel 2">
+
+            <div class="btn-row">
+                <button type="submit" name="action" value="update" class="update-btn">Bijwerken</button>
+                <button type="submit" name="action" value="delete" class="delete-btn">Verwijderen</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="nav">
+        <a href="{{ url_for('index') }}">&#8592; Terug naar Hoofdpagina</a>
+    </div>
+</body>
+</html>
