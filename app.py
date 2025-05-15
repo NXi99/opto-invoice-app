@@ -95,7 +95,7 @@ def generate():
         'enable-local-file-access': '',
         'encoding': 'UTF-8',
         'margin-top': '10mm',
-        'margin-bottom': '10mm',
+        'margin-bottom': '50mm',
         'footer-html': f'file://{Path("templates/footer.html").resolve()}'
     }
 
