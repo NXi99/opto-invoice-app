@@ -12,7 +12,6 @@ DATA_DIR = Path(".")
 CUSTOMERS_FILE = DATA_DIR / "customers.json"
 LOG_FILE = DATA_DIR / "invoice_log.json"
 
-
 # === Helpers ===
 def load_customers():
     if CUSTOMERS_FILE.exists():
@@ -20,18 +19,15 @@ def load_customers():
             return json.load(f)
     return {}
 
-
 def save_customers(data):
     with open(CUSTOMERS_FILE, 'w') as f:
         json.dump(data, f, indent=4)
-
 
 def load_invoice_log():
     if LOG_FILE.exists():
         with open(LOG_FILE, 'r') as f:
             return json.load(f)
     return {}
-
 
 def update_invoice_log(customer_id):
     log = load_invoice_log()
@@ -42,12 +38,10 @@ def update_invoice_log(customer_id):
         json.dump(log, f, indent=4)
     return log[key]
 
-
 @app.route("/")
 def index():
     customers = load_customers()
     return render_template("form.html", customers=customers)
-
 
 @app.route("/generate", methods=["POST"])
 def generate():
@@ -92,20 +86,21 @@ def generate():
 
     footer_path = Path("footer_temp.html")
     with open(footer_path, "w", encoding="utf-8") as f:
-      f.write(footer_html)
+        f.write(footer_html)
 
     config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
-
     options = {
         'enable-local-file-access': '',
         'encoding': 'UTF-8',
         'margin-top': '20mm',
-        'margin-bottom': '20mm',
+        'margin-bottom': '30mm',
         'footer-html': str(footer_path.resolve())
     }
 
     pdf_data = pdfkit.from_string(html, False, configuration=config, options=options)
     pdf_filename = f"{invoice_number}_{info['name'].split()[0]}.pdf"
+
+    footer_path.unlink(missing_ok=True)
 
     return send_file(
         BytesIO(pdf_data),
@@ -113,7 +108,6 @@ def generate():
         as_attachment=True,
         download_name=pdf_filename
     )
-
 
 @app.route("/add-customer", methods=["GET", "POST"])
 def add_customer():
@@ -138,7 +132,6 @@ def add_customer():
         return redirect(url_for("index"))
 
     return render_template("add_customer.html")
-
 
 @app.route("/edit-customer", methods=["GET", "POST"])
 def edit_customer():
@@ -169,7 +162,6 @@ def edit_customer():
 
     return render_template("edit_customer.html", customers=customers)
 
-
 @app.route("/reset-counter", methods=["GET", "POST"])
 def reset_counter():
     customers = load_customers()
@@ -191,7 +183,6 @@ def reset_counter():
             return redirect(url_for("reset_counter"))
 
     return render_template("reset_counter.html", customers=customers)
-
 
 if __name__ == "__main__":
     app.run(debug=True)
