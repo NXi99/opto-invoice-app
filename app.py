@@ -107,10 +107,6 @@ def generate():
         download_name=pdf_filename
     )
 
-@app.route("/footer-preview")
-def preview_footer():
-    return render_template("footer.html", invoice_number="TEST-0001", invoice_date="16-05-2025")
-
 @app.route("/add-customer", methods=["GET", "POST"])
 def add_customer():
     customers = load_customers()
