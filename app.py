@@ -97,12 +97,15 @@ def generate():
     config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
 
     options = {
-        'enable-local-file-access': '',
-        'encoding': 'UTF-8',
-        'margin-top': '10mm',
-        'margin-bottom': '50mm',
-        'footer-html': f'file://{Path("templates/footer.html").resolve()}'
-    }
+    'enable-local-file-access': '',
+    'encoding': 'UTF-8',
+    'margin-top': '20mm',
+    'margin-bottom': '30mm',
+    'footer-center': 'Opto Optiek B.V. | BTW.NO. NL856694691B01 | KVK: 66780241 | IBAN: NL25 INGB 0733738028',
+    'footer-font-size': '9',
+    'footer-line': '',
+   } 
+
 
     pdf_data = pdfkit.from_file(tmp_path, False, configuration=config, options=options)
     pdf_filename = f"{invoice_number}_{info['name'].split()[0]}.pdf"
