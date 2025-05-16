@@ -102,6 +102,8 @@ def generate():
 
     footer_path.unlink(missing_ok=True)
 
+    print("PDF Options:", options)
+
     return send_file(
         BytesIO(pdf_data),
         mimetype='application/pdf',
