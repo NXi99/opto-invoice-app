@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file
+from tempfile import NamedTemporaryFile
 import json
 import pdfkit
 from pathlib import Path
@@ -89,6 +90,10 @@ def generate():
 
     html = render_template("Opto.html", **context)
 
+    with NamedTemporaryFile('w', suffix='.html', delete=False) as tmp:
+      tmp.write(html)
+      tmp_path = tmp.name
+
     config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
 
     options = {
@@ -99,7 +104,7 @@ def generate():
         'footer-html': f'file://{Path("templates/footer.html").resolve()}'
     }
 
-    pdf_data = pdfkit.from_string(html, False, configuration=config, options=options)
+    pdf_data = pdfkit.from_file(tmp_path, False, configuration=config, options=options)
     pdf_filename = f"{invoice_number}_{info['name'].split()[0]}.pdf"
 
     return send_file(
