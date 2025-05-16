@@ -93,7 +93,7 @@ def generate():
         'enable-local-file-access': '',
         'encoding': 'UTF-8',
         'margin-top': '20mm',
-        'margin-bottom': '30mm',
+        'margin-bottom': '60mm',
         'footer-html': str(footer_path.resolve())
     }
 
