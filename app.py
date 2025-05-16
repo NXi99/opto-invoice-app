@@ -99,8 +99,8 @@ def generate():
     options = {
     'enable-local-file-access': '',
     'encoding': 'UTF-8',
-    'margin-top': '20mm',
-    'margin-bottom': '30mm',
+    'margin-top': '10mm',
+    'margin-bottom': '100mm',
     'footer-center': 'Opto Optiek B.V. | BTW.NO. NL856694691B01 | KVK: 66780241 | IBAN: NL25 INGB 0733738028',
     'footer-font-size': '9',
     'footer-line': '',
