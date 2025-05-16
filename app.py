@@ -92,6 +92,7 @@ def generate():
         'encoding': 'UTF-8',
         'margin-top': '20mm',
         'margin-bottom': '60mm',
+        'footer-center': 'This is a test footer'
         'footer-html': str(footer_path.resolve())
     }
 
