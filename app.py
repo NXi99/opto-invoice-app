@@ -88,6 +88,11 @@ def generate():
     }
 
     html = render_template("Opto.html", **context)
+    footer_html = render_template("footer.html", **context)
+
+    footer_path = Path("footer_temp.html")
+    with open(footer_path, "w", encoding="utf-8") as f:
+      f.write(footer_html)
 
     config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
 
@@ -96,7 +101,7 @@ def generate():
         'encoding': 'UTF-8',
         'margin-top': '20mm',
         'margin-bottom': '20mm',
-        'footer-html': str(Path("templates/footer.html").resolve())
+        'footer-html': str(footer_path.resolve())
     }
 
     pdf_data = pdfkit.from_string(html, False, configuration=config, options=options)
