@@ -90,8 +90,8 @@ def generate():
     options = {
         'enable-local-file-access': '',
         'encoding': 'UTF-8',
-        'margin-top': '20mm',
-        'margin-bottom': '60mm',
+        'margin-top': '10mm',
+        'margin-bottom': '40mm',
         'footer-center': 'This is a test footer'
         'footer-html': str(footer_path.resolve())
     }
@@ -100,9 +100,6 @@ def generate():
     pdf_filename = f"{invoice_number}_{info['name'].split()[0]}.pdf"
 
     footer_path.unlink(missing_ok=True)
-
-    print("Using footer path:", footer_path.resolve())
-    print("File exists:", footer_path.exists())
 
     return send_file(
         BytesIO(pdf_data),
