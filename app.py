@@ -100,6 +100,9 @@ def generate():
 
     footer_path.unlink(missing_ok=True)
 
+    print("Using footer path:", footer_path.resolve())
+    print("File exists:", footer_path.exists())
+
     return send_file(
         BytesIO(pdf_data),
         mimetype='application/pdf',
