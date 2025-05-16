@@ -85,14 +85,15 @@ def generate():
     footer_html = render_template("footer.html", **context)
 
     footer_path = Path("footer_temp.html")
+    with open(footer_path, "w", encoding="utf-8") as f:
+        f.write(footer_html)
 
     config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
     options = {
         'enable-local-file-access': '',
         'encoding': 'UTF-8',
-        'margin-top': '10mm',
-        'margin-bottom': '40mm',
-        'footer-center': 'This is a test footer'
+        'margin-top': '20mm',
+        'margin-bottom': '30mm',
         'footer-html': str(footer_path.resolve())
     }
 
