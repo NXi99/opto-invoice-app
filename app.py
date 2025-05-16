@@ -85,12 +85,6 @@ def generate():
     footer_html = render_template("footer.html", **context)
 
     footer_path = Path("footer_temp.html")
-    with open(footer_path, "w", encoding="utf-8") as f:
-      f.write(footer_html)
-
-   print("Footer file written to:", footer_path.resolve())
-   print("Rendered footer HTML:")
-   print(footer_html)
 
     config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
     options = {
@@ -105,8 +99,6 @@ def generate():
     pdf_filename = f"{invoice_number}_{info['name'].split()[0]}.pdf"
 
     footer_path.unlink(missing_ok=True)
-
-    print("PDF Options:", options)
 
     return send_file(
         BytesIO(pdf_data),
