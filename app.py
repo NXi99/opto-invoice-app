@@ -86,7 +86,11 @@ def generate():
 
     footer_path = Path("footer_temp.html")
     with open(footer_path, "w", encoding="utf-8") as f:
-        f.write(footer_html)
+      f.write(footer_html)
+
+   print("Footer file written to:", footer_path.resolve())
+   print("Rendered footer HTML:")
+   print(footer_html)
 
     config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
     options = {
@@ -110,6 +114,10 @@ def generate():
         as_attachment=True,
         download_name=pdf_filename
     )
+
+@app.route("/footer-preview")
+def preview_footer():
+    return render_template("footer.html", invoice_number="TEST-0001", invoice_date="16-05-2025")
 
 @app.route("/add-customer", methods=["GET", "POST"])
 def add_customer():
