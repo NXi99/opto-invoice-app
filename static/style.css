@@ -1,3 +1,4 @@
+/* === Base Light Theme === */
 body {
     font-family: Arial, sans-serif;
     background: #f9f9f9;
@@ -6,11 +7,6 @@ body {
     margin: auto;
     color: #000;
     transition: background 0.3s, color 0.3s;
-}
-
-.dark-mode {
-    background: #121212;
-    color: #f0f0f0;
 }
 
 .nav-buttons {
@@ -55,4 +51,40 @@ body {
 
 .dual-buttons button {
     flex: 1;
+}
+
+/* === Dark Mode Styles === */
+body.dark-mode {
+    background-color: #121212;
+    color: #f0f0f0;
+}
+
+body.dark-mode .nav-buttons a {
+    background: #444;
+    color: #fff;
+}
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+    background-color: #1e1e1e;
+    color: #f0f0f0;
+    border: 1px solid #444;
+}
+
+body.dark-mode button {
+    background-color: #333;
+    color: #fff;
+}
+
+body.dark-mode .flash.success {
+    background: #1d3d2a;
+    color: #aef0c3;
+    border-left: 6px solid #28a745;
+}
+
+body.dark-mode .flash.error {
+    background: #5a1a1a;
+    color: #ffcccc;
+    border-left: 6px solid #dc3545;
 }
