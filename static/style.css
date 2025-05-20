@@ -8,12 +8,15 @@ html, body {
 /* === LIGHT MODE BASE === */
 body {
     font-family: Arial, sans-serif;
-    background: #f9f9f9;
     padding: 40px;
     max-width: 700px;
     margin: auto;
     color: #000;
     transition: background 0.3s, color 0.3s;
+}
+
+html {
+    background-color: #f9f9f9;
 }
 
 .nav-buttons {
