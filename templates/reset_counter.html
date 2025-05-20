@@ -81,6 +81,7 @@
     <form method="POST" action="{{ url_for('reset_counter') }}">
         <label for="customer_id">Selecteer Klant:</label>
         <select name="customer_id" id="customer_id" required>
+            <div id="current-invoice-info" style="margin-top: 10px; font-size: 14px; color: #333;"></div>
             {% for cid, info in customers.items() %}
                 <option value="{{ cid }}">{{ cid }} - {{ info.name }}</option>
             {% endfor %}
@@ -95,5 +96,24 @@
     <div class="nav">
         <a href="{{ url_for('index') }}">&#8592; Terug naar Hoofdpagina</a>
     </div>
+    
+<script>
+    const log = {{ invoice_log | tojson }};
+    const customerSelect = document.getElementById("customer_id");
+    const infoDiv = document.getElementById("current-invoice-info");
+    const currentYear = new Date().getFullYear();
+
+    function updateInfo() {
+        const id = customerSelect.value.padStart(2, '0');
+        const key = `${currentYear}-${id}`;
+        const count = log[key] || 0;
+        const latest = `${key}${count.toString().padStart(2, '0')}`;
+        infoDiv.innerHTML = `Huidige teller: ${count}<br>Laatste factuurnummer: ${latest}`;
+    }
+
+    customerSelect.addEventListener("change", updateInfo);
+    updateInfo(); // trigger once on load
+</script>
+    
 </body>
 </html>
