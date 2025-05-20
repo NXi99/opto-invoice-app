@@ -115,6 +115,14 @@
     customerSelect.addEventListener("change", updateInfo);
     updateInfo(); // trigger once on load
 </script>
+
+    <script>
+window.onload = function() {
+    if (localStorage.getItem("darkMode") === "true") {
+        document.body.classList.add("dark-mode");
+    }
+};
+</script>
     
 </body>
 </html>
