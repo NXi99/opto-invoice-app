@@ -53,11 +53,6 @@ body {
 }
 
 /* === DARK MODE OVERRIDES === */
-.dark-mode {
-    background: #121212;
-    color: #f0f0f0;
-}
-
 .dark-mode,
 .dark-mode body,
 .dark-mode html {
