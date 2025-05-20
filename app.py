@@ -1,15 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, send_file, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file
 import json
 import pdfkit
 from pathlib import Path
 from datetime import datetime
 from io import BytesIO
-import smtplib
-import ssl
-from email.message import EmailMessage
-import zipfile
-import tempfile
-from utils import update_description_cache, load_recent_descriptions, get_invoice_counter
 
 app = Flask(__name__)
 app.secret_key = 'opto-secret-key'
@@ -17,12 +11,8 @@ app.secret_key = 'opto-secret-key'
 DATA_DIR = Path(".")
 CUSTOMERS_FILE = DATA_DIR / "customers.json"
 LOG_FILE = DATA_DIR / "invoice_log.json"
-DESC_CACHE_FILE = DATA_DIR / "description_cache.json"
 
-PDF_OUTPUT_DIR = DATA_DIR / "invoices"
-PDF_OUTPUT_DIR.mkdir(exist_ok=True)
-
-# === Load/Save Helpers ===
+# === Helpers ===
 def load_customers():
     if CUSTOMERS_FILE.exists():
         with open(CUSTOMERS_FILE, 'r') as f:
@@ -51,31 +41,23 @@ def update_invoice_log(customer_id):
 @app.route("/")
 def index():
     customers = load_customers()
-    descriptions = load_recent_descriptions(DESC_CACHE_FILE)
-    return render_template("form.html", customers=customers, descriptions=descriptions)
-
-@app.route("/get-invoice-number", methods=["POST"])
-def get_invoice_number():
-    customer_id = request.json.get("customer_id")
-    number = get_invoice_counter(customer_id, LOG_FILE)
-    return jsonify({"number": number})
+    return render_template("form.html", customers=customers)
 
 @app.route("/generate", methods=["POST"])
 def generate():
     customers = load_customers()
     customer_id = request.form.get("customer_id")
     description = request.form.get("description")
-    email_address = request.form.get("email")
     amount_incl = request.form.get("amount_incl")
 
     if not (customer_id and description and amount_incl):
-        flash("Vul alle velden in.", "error")
+        flash("Vul alle velden in.")
         return redirect(url_for("index"))
 
     try:
         incl = float(amount_incl)
     except ValueError:
-        flash("Voer een geldig bedrag in.", "error")
+        flash("Voer een geldig bedrag in.")
         return redirect(url_for("index"))
 
     excl = round(incl / 1.21, 2)
@@ -118,78 +100,89 @@ def generate():
     pdf_data = pdfkit.from_string(html, False, configuration=config, options=options)
     pdf_filename = f"{invoice_number}_{info['name'].split()[0]}.pdf"
 
-    (PDF_OUTPUT_DIR / pdf_filename).write_bytes(pdf_data)
     footer_path.unlink(missing_ok=True)
 
-    # Save recent description
-    update_description_cache(description, DESC_CACHE_FILE)
+    return send_file(
+        BytesIO(pdf_data),
+        mimetype='application/pdf',
+        as_attachment=True,
+        download_name=pdf_filename
+    )
 
-    # Send email if requested
-    if email_address:
-        try:
-            msg = EmailMessage()
-            msg['Subject'] = f"Factuur {invoice_number}"
-            msg['From'] = "no-reply@optoinvoice.com"
-            msg['To'] = email_address
-            msg.set_content("In de bijlage vindt u uw factuur als PDF.")
-            msg.add_attachment(pdf_data, maintype='application', subtype='pdf', filename=pdf_filename)
-
-            context = ssl.create_default_context()
-            with smtplib.SMTP_SSL('smtp.example.com', 465, context=context) as smtp:
-                smtp.login('your_username', 'your_password')
-                smtp.send_message(msg)
-
-            flash("Factuur verzonden naar e-mail.", "success")
-        except Exception:
-            flash("E-mail verzenden mislukt.", "error")
-
-    flash("Factuur succesvol gegenereerd.", "success")
-    return send_file(BytesIO(pdf_data), mimetype='application/pdf', as_attachment=True, download_name=pdf_filename)
-
-@app.route("/preview", methods=["POST"])
-def preview():
+@app.route("/add-customer", methods=["GET", "POST"])
+def add_customer():
     customers = load_customers()
-    customer_id = request.form.get("customer_id")
-    description = request.form.get("description")
-    amount_incl = request.form.get("amount_incl")
+    if request.method == "POST":
+        name = request.form.get("name").strip()
+        addr1 = request.form.get("address_line1", "").strip()
+        addr2 = request.form.get("address_line2", "").strip()
 
-    if not (customer_id and description and amount_incl):
-        return "Ontbrekende gegevens."
+        if not name:
+            flash("Naam mag niet leeg zijn.")
+            return redirect(url_for("add_customer"))
 
-    try:
-        incl = float(amount_incl)
-    except ValueError:
-        return "Ongeldig bedrag."
+        next_id = str(max([int(i) for i in customers.keys()] + [0]) + 1)
+        customers[next_id] = {
+            "name": name,
+            "address_line1": addr1,
+            "address_line2": addr2
+        }
+        save_customers(customers)
+        flash("Klant toegevoegd.")
+        return redirect(url_for("index"))
 
-    excl = round(incl / 1.21, 2)
-    vat = round(incl - excl, 2)
+    return render_template("add_customer.html")
 
-    info = customers[customer_id]
-    invoice_number = "VOORBEELD"
-    invoice_date = datetime.now().strftime("%d-%m-%Y")
+@app.route("/edit-customer", methods=["GET", "POST"])
+def edit_customer():
+    customers = load_customers()
+    if request.method == "POST":
+        cid = request.form.get("selected_id")
+        action = request.form.get("action")
 
-    context = {
-        "invoice_number": invoice_number,
-        "invoice_date": invoice_date,
-        "customer_name": info["name"],
-        "customer_address_line1": info["address_line1"],
-        "customer_address_line2": info["address_line2"],
-        "description": description,
-        "amount_excl": f"€ {excl:,.2f}",
-        "vat_amount": f"€ {vat:,.2f}",
-        "amount_incl": f"€ {incl:,.2f}"
-    }
-    return render_template("Opto.html", **context)
+        if action == "delete":
+            if cid in customers:
+                del customers[cid]
+                save_customers(customers)
+                flash("Klant verwijderd.")
+        elif action == "update":
+            name = request.form.get("name").strip()
+            addr1 = request.form.get("address_line1", "").strip()
+            addr2 = request.form.get("address_line2", "").strip()
 
-@app.route("/download-logs")
-def download_logs():
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".zip") as tmp:
-        with zipfile.ZipFile(tmp, 'w') as zipf:
-            for file_path in [CUSTOMERS_FILE, LOG_FILE]:
-                if file_path.exists():
-                    zipf.write(file_path, arcname=file_path.name)
-        tmp.seek(0)
-        return send_file(tmp.name, as_attachment=True, download_name="opto_logs.zip")
+            if cid in customers:
+                if name:
+                    customers[cid]["name"] = name
+                customers[cid]["address_line1"] = addr1
+                customers[cid]["address_line2"] = addr2
+                save_customers(customers)
+                flash("Klantgegevens bijgewerkt.")
+
+        return redirect(url_for("edit_customer"))
+
+    return render_template("edit_customer.html", customers=customers)
+
+@app.route("/reset-counter", methods=["GET", "POST"])
+def reset_counter():
+    customers = load_customers()
+    log = load_invoice_log()
+
+    if request.method == "POST":
+        cid = request.form.get("customer_id")
+        try:
+            new_value = int(request.form.get("new_value"))
+            year = str(datetime.now().year)
+            key = f"{year}-{str(cid).zfill(2)}"
+            log[key] = new_value
+            with open(LOG_FILE, 'w') as f:
+                json.dump(log, f, indent=4)
+            flash("Factuurteller gereset.")
+            return redirect(url_for("index"))
+        except:
+            flash("Ongeldig nummer ingevoerd.")
+            return redirect(url_for("reset_counter"))
+
+    return render_template("reset_counter.html", customers=customers)
 
 if __name__ == "__main__":
     app.run(debug=True)
