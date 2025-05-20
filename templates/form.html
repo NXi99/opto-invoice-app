@@ -3,79 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Opto Facturatie</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f9f9f9;
-            padding: 40px;
-            max-width: 700px;
-            margin: auto;
+    <link rel="stylesheet" href="/static/style.css">
+    <script>
+        function updateInvoiceNumber() {
+            const customerId = document.getElementById('customer_id').value;
+            fetch('/get-invoice-number', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ customer_id: customerId })
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('invoice_number_display').innerText = `Huidig factuurnummer: ${data.number}`;
+            });
         }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .nav-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-
-        .nav-buttons a {
-            display: inline-block;
-            text-decoration: none;
-            background: #0077cc;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            border-radius: 5px;
-        }
-
-        form {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        label {
-            display: block;
-            margin: 12px 0 4px;
-        }
-
-        select, input[type="text"], input[type="number"] {
-            width: 100%;
-            padding: 8px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            margin-top: 20px;
-            background: #0077cc;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            border-radius: 4px;
-        }
-
-        .flash {
-            margin-bottom: 20px;
-            background: #ffe0e0;
-            padding: 10px;
-            border-radius: 6px;
-            color: #a00;
-        }
-    </style>
+    </script>
 </head>
 <body>
+    <header>
+        <button onclick="document.body.classList.toggle('dark-mode')">🌓 Donkere modus</button>
+    </header>
 
     <h1>Factuur Aanmaken</h1>
 
@@ -83,30 +30,45 @@
         <a href="{{ url_for('add_customer') }}">Klant Toevoegen</a>
         <a href="{{ url_for('edit_customer') }}">Klant Bewerken of Verwijderen</a>
         <a href="{{ url_for('reset_counter') }}">Factuurnummer Resetten</a>
+        <a href="{{ url_for('download_logs') }}">Download Logs</a>
     </div>
 
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
-        <div class="flash">{{ messages[0] }}</div>
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
       {% endif %}
     {% endwith %}
 
     <form method="POST" action="{{ url_for('generate') }}">
         <label for="customer_id">Selecteer Klant:</label>
-        <select name="customer_id" id="customer_id" required>
+        <select name="customer_id" id="customer_id" onchange="updateInvoiceNumber()" required>
             {% for cid, info in customers.items() %}
                 <option value="{{ cid }}">{{ cid }} - {{ info.name }}</option>
             {% endfor %}
         </select>
 
+        <p id="invoice_number_display" style="margin-top:10px; font-style: italic;"></p>
+
         <label for="description">Omschrijving:</label>
-        <input type="text" name="description" id="description" placeholder="Dienst of productbeschrijving" required>
+        <input list="descriptions" name="description" id="description" placeholder="Dienst of productbeschrijving" required>
+        <datalist id="descriptions">
+            {% for desc in descriptions %}
+                <option value="{{ desc }}">
+            {% endfor %}
+        </datalist>
 
         <label for="amount_incl">Bedrag incl. BTW (€):</label>
         <input type="number" name="amount_incl" id="amount_incl" placeholder="Bijv. 121.00" step="0.01" required>
 
-        <button type="submit">Genereer Factuur</button>
-    </form>
+        <label for="email">E-mail (optioneel):</label>
+        <input type="text" name="email" id="email" placeholder="voorbeeld@bedrijf.nl">
 
+        <div class="dual-buttons">
+            <button type="submit">Genereer Factuur</button>
+            <button type="submit" formaction="{{ url_for('preview') }}" formtarget="_blank">Voorbeeld Bekijken</button>
+        </div>
+    </form>
 </body>
 </html>
