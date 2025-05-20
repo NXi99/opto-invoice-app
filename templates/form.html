@@ -79,6 +79,29 @@
 
     <h1>Factuur Aanmaken</h1>
 
+    <div style="margin-top: 30px; text-align: center;">
+    <button id="darkModeBtn" onclick="toggleDarkMode()">🌙 Donkere modus</button>
+</div>
+
+<script>
+function toggleDarkMode() {
+    const body = document.body;
+    body.classList.toggle("dark-mode");
+    const isDark = body.classList.contains("dark-mode");
+    localStorage.setItem("darkMode", isDark);
+    document.getElementById("darkModeBtn").textContent = isDark ? "☀️ Licht modus" : "🌙 Donkere modus";
+}
+
+window.onload = function() {
+    const isDark = localStorage.getItem("darkMode") === "true";
+    if (isDark) {
+        document.body.classList.add("dark-mode");
+        const btn = document.getElementById("darkModeBtn");
+        if (btn) btn.textContent = "☀️ Licht modus";
+    }
+};
+</script>
+
     <div class="nav-buttons">
         <a href="{{ url_for('add_customer') }}">Klant Toevoegen</a>
         <a href="{{ url_for('edit_customer') }}">Klant Bewerken of Verwijderen</a>
