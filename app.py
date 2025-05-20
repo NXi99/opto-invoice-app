@@ -10,7 +10,7 @@ app.secret_key = 'opto-secret-key'
 
 DATA_DIR = Path(".")
 CUSTOMERS_FILE = DATA_DIR / "customers.json"
-LOG_FILE = DATA_DIR / "invoice_log.json"
+LOG_FILE = DATA_DIR / "invoice_log.json" 
 
 # === Helpers ===
 def load_customers():
@@ -182,7 +182,7 @@ def reset_counter():
             flash("Ongeldig nummer ingevoerd.")
             return redirect(url_for("reset_counter"))
 
-    return render_template("reset_counter.html", customers=customers)
+    return render_template("reset_counter.html", customers=customers, invoice_log=log)
 
 if __name__ == "__main__":
     app.run(debug=True)
