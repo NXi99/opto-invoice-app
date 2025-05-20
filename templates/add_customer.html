@@ -46,6 +46,17 @@
             border-radius: 4px;
         }
 
+        .flash {
+    margin: 20px 0;
+    background: #d4edda;
+    color: #000000;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #c3e6cb;
+    text-align: center;
+    font-weight: 500;
+}
+
         button {
             margin-top: 20px;
             background: #0077cc;
@@ -70,6 +81,11 @@
 </head>
 <body>
     <h2>Nieuwe Klant Toevoegen</h2>
+    {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash">{{ messages[0] }}</div>
+  {% endif %}
+{% endwith %}
 
     <form method="POST">
         <label for="name">Naam van klant:</label>
