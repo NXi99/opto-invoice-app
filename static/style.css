@@ -59,6 +59,10 @@ body {
     color: #f0f0f0;
 }
 
+.dark-mode, .dark-mode html {
+    background-color: #121212;
+}
+
 .dark-mode a {
     color: #66bfff;
 }
