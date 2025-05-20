@@ -123,5 +123,13 @@
     <div class="nav">
         <a href="{{ url_for('index') }}">&#8592; Terug naar Hoofdpagina</a>
     </div>
+    <script>
+window.onload = function() {
+    if (localStorage.getItem("darkMode") === "true") {
+        document.body.classList.add("dark-mode");
+    }
+};
+</script>
+
 </body>
 </html>
