@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Opto Facturatie</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,23 +16,6 @@
         h1 {
             text-align: center;
             margin-bottom: 30px;
-        }
-
-        .nav-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-
-        .nav-buttons a {
-            display: inline-block;
-            text-decoration: none;
-            background: #0077cc;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            border-radius: 5px;
         }
 
         form {
@@ -65,42 +49,11 @@
             width: 100%;
             border-radius: 4px;
         }
-
-        .flash {
-            margin-bottom: 20px;
-            background: #ffe0e0;
-            padding: 10px;
-            border-radius: 6px;
-            color: #a00;
-        }
     </style>
 </head>
 <body>
 
     <h1>Factuur Aanmaken</h1>
-
-    <div style="margin-top: 30px; text-align: center;">
-    <button id="darkModeBtn" onclick="toggleDarkMode()">🌙 Donkere modus</button>
-</div>
-
-<script>
-function toggleDarkMode() {
-    const body = document.body;
-    body.classList.toggle("dark-mode");
-    const isDark = body.classList.contains("dark-mode");
-    localStorage.setItem("darkMode", isDark);
-    document.getElementById("darkModeBtn").textContent = isDark ? "☀️ Licht modus" : "🌙 Donkere modus";
-}
-
-window.onload = function() {
-    const isDark = localStorage.getItem("darkMode") === "true";
-    if (isDark) {
-        document.body.classList.add("dark-mode");
-        const btn = document.getElementById("darkModeBtn");
-        if (btn) btn.textContent = "☀️ Licht modus";
-    }
-};
-</script>
 
     <div class="nav-buttons">
         <a href="{{ url_for('add_customer') }}">Klant Toevoegen</a>
@@ -108,9 +61,11 @@ window.onload = function() {
         <a href="{{ url_for('reset_counter') }}">Factuurnummer Resetten</a>
     </div>
 
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
-        <div class="flash">{{ messages[0] }}</div>
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
       {% endif %}
     {% endwith %}
 
@@ -130,6 +85,30 @@ window.onload = function() {
 
         <button type="submit">Genereer Factuur</button>
     </form>
+
+    <!-- Dark Mode Toggle -->
+    <div style="margin-top: 30px; text-align: center;">
+        <button id="darkModeBtn" onclick="toggleDarkMode()">🌙 Donkere modus</button>
+    </div>
+
+    <script>
+    function toggleDarkMode() {
+        const body = document.body;
+        body.classList.toggle("dark-mode");
+        const isDark = body.classList.contains("dark-mode");
+        localStorage.setItem("darkMode", isDark);
+        document.getElementById("darkModeBtn").textContent = isDark ? "☀️ Licht modus" : "🌙 Donkere modus";
+    }
+
+    window.onload = function() {
+        const isDark = localStorage.getItem("darkMode") === "true";
+        if (isDark) {
+            document.body.classList.add("dark-mode");
+            const btn = document.getElementById("darkModeBtn");
+            if (btn) btn.textContent = "☀️ Licht modus";
+        }
+    };
+    </script>
 
 </body>
 </html>
