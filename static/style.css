@@ -1,3 +1,10 @@
+/* === PAGE RESET === */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 /* === LIGHT MODE BASE === */
 body {
     font-family: Arial, sans-serif;
@@ -54,13 +61,10 @@ body {
 }
 
 /* === DARK MODE OVERRIDES === */
-.dark-mode {
-    background: #121212;
-    color: #f0f0f0;
-}
-
-.dark-mode, .dark-mode html {
+.dark-mode html,
+.dark-mode body {
     background-color: #121212;
+    color: #f0f0f0;
 }
 
 .dark-mode a {
@@ -118,7 +122,7 @@ body {
     background-color: #1e1e1e;
 }
 
-/* Optional smooth transition */
+/* === Smooth Transitions === */
 * {
     transition: background-color 0.3s, color 0.3s;
 }
