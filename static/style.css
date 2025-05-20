@@ -1,3 +1,4 @@
+/* === LIGHT MODE BASE === */
 body {
     font-family: Arial, sans-serif;
     background: #f9f9f9;
@@ -6,11 +7,6 @@ body {
     margin: auto;
     color: #000;
     transition: background 0.3s, color 0.3s;
-}
-
-.dark-mode {
-    background: #121212;
-    color: #f0f0f0;
 }
 
 .nav-buttons {
@@ -55,4 +51,70 @@ body {
 
 .dual-buttons button {
     flex: 1;
+}
+
+/* === DARK MODE OVERRIDES === */
+.dark-mode {
+    background: #121212;
+    color: #f0f0f0;
+}
+
+.dark-mode a {
+    color: #66bfff;
+}
+
+.dark-mode .nav-buttons a {
+    background: #333;
+    color: white;
+}
+
+.dark-mode input,
+.dark-mode select,
+.dark-mode textarea {
+    background-color: #1e1e1e;
+    color: #f0f0f0;
+    border: 1px solid #444;
+}
+
+.dark-mode button {
+    background-color: #2e2e2e;
+    color: #fff;
+}
+
+.dark-mode .flash.success {
+    background-color: #1d3d2a;
+    color: #aef0c3;
+    border-left: 6px solid #28a745;
+}
+
+.dark-mode .flash.error {
+    background-color: #5a1a1a;
+    color: #ffcccc;
+    border-left: 6px solid #dc3545;
+}
+
+.dark-mode form,
+.dark-mode .customer-list {
+    background-color: #1a1a1a;
+    color: #f0f0f0;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode table {
+    background-color: #1a1a1a;
+    color: #f0f0f0;
+    border-color: #444;
+}
+
+.dark-mode th {
+    background-color: #2a2a2a;
+}
+
+.dark-mode td {
+    background-color: #1e1e1e;
+}
+
+/* Optional smooth transition */
+* {
+    transition: background-color 0.3s, color 0.3s;
 }
