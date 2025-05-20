@@ -129,7 +129,8 @@ def add_customer():
         }
         save_customers(customers)
         flash("Klant toegevoegd.")
-        return redirect(url_for("index"))
+        return redirect(url_for("add_customer"))
+        
 
     return render_template("add_customer.html")
 
@@ -177,10 +178,11 @@ def reset_counter():
             with open(LOG_FILE, 'w') as f:
                 json.dump(log, f, indent=4)
             flash("Factuurteller gereset.")
-            return redirect(url_for("index"))
+            return redirect(url_for("reset_counter"))
         except:
             flash("Ongeldig nummer ingevoerd.")
             return redirect(url_for("reset_counter"))
+            
 
     return render_template("reset_counter.html", customers=customers, invoice_log=log)
 
