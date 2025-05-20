@@ -3,6 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Klant Bewerken of Verwijderen</title>
+
+    <!-- ✅ Apply dark mode before rendering -->
+    <script>
+    if (localStorage.getItem("darkMode") === "true") {
+        document.documentElement.classList.add("dark-mode");
+    }
+    </script>
+
+    <!-- ✅ Load global stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -123,13 +134,5 @@
     <div class="nav">
         <a href="{{ url_for('index') }}">&#8592; Terug naar Hoofdpagina</a>
     </div>
-    <script>
-window.onload = function() {
-    if (localStorage.getItem("darkMode") === "true") {
-        document.body.classList.add("dark-mode");
-    }
-};
-</script>
-
 </body>
 </html>
