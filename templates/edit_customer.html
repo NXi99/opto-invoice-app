@@ -95,6 +95,17 @@
         }
     </style>
 </head>
+
+    <script>
+    function confirmDelete() {
+        return confirm("Weet je zeker dat je deze klant wilt verwijderen?");
+    }
+
+    function confirmUpdate() {
+        return confirm("Wil je de klantgegevens bijwerken?");
+    }
+</script>
+
 <body>
     <h2>Klant Bewerken of Verwijderen</h2>
 
@@ -123,8 +134,8 @@
             <input type="text" name="address_line2" id="address_line2" placeholder="Nieuwe adresregel 2">
 
             <div class="btn-row">
-                <button type="submit" name="action" value="update" class="update-btn">Bijwerken</button>
-                <button type="submit" name="action" value="delete" class="delete-btn">Verwijderen</button>
+                <button type="submit" name="action" value="update" class="update-btn" onclick="return confirmUpdate()">Bijwerken</button>
+                <button type="submit" name="action" value="delete" class="delete-btn" onclick="return confirmDelete()">Verwijderen</button>
             </div>
         </form>
     </div>
