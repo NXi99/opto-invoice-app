@@ -48,22 +48,22 @@ def generate():
     customers = load_customers()
     customer_id = request.form.get("customer_id")
     description = request.form.get("description")
-    amount_excl = request.form.get("amount_excl")
+    amount_incl = request.form.get("amount_incl")
 
-    if not (customer_id and description and amount_excl):
+    if not (customer_id and description and amount_incl):
         flash("Vul alle velden in.")
         return redirect(url_for("index"))
 
     try:
-        excl = float(amount_excl)
+        incl = float(amount_incl)
     except ValueError:
         flash("Voer een geldig bedrag in.")
         return redirect(url_for("index"))
 
-    info = customers[customer_id]
-    vat = round(excl * 0.21, 2)
-    total = round(excl + vat, 2)
+    excl = round(incl / 1.21, 2)
+    vat = round(incl - excl, 2)
 
+    info = customers[customer_id]
     year = str(datetime.now().year)
     sequence = update_invoice_log(customer_id)
     invoice_number = f"{year}-{str(customer_id).zfill(2)}{sequence:02d}"
@@ -78,7 +78,7 @@ def generate():
         "description": description,
         "amount_excl": f"€ {excl:,.2f}",
         "vat_amount": f"€ {vat:,.2f}",
-        "amount_incl": f"€ {total:,.2f}"
+        "amount_incl": f"€ {incl:,.2f}"
     }
 
     html = render_template("Opto.html", **context)
