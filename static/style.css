@@ -1,22 +1,11 @@
-/* === PAGE RESET === */
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-/* === LIGHT MODE BASE === */
 body {
     font-family: Arial, sans-serif;
+    background: #f9f9f9;
     padding: 40px;
     max-width: 700px;
     margin: auto;
     color: #000;
     transition: background 0.3s, color 0.3s;
-}
-
-html {
-    background-color: #f9f9f9;
 }
 
 .nav-buttons {
@@ -64,9 +53,8 @@ html {
 }
 
 /* === DARK MODE OVERRIDES === */
-.dark-mode html,
-.dark-mode body {
-    background-color: #121212;
+.dark-mode {
+    background: #121212;
     color: #f0f0f0;
 }
 
@@ -125,7 +113,7 @@ html {
     background-color: #1e1e1e;
 }
 
-/* === Smooth Transitions === */
+/* Optional smooth transition */
 * {
     transition: background-color 0.3s, color 0.3s;
 }
