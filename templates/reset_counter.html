@@ -81,11 +81,12 @@
     <form method="POST" action="{{ url_for('reset_counter') }}">
         <label for="customer_id">Selecteer Klant:</label>
         <select name="customer_id" id="customer_id" required>
-            <div id="current-invoice-info" style="margin-top: 10px; font-size: 14px; color: #333;"></div>
             {% for cid, info in customers.items() %}
                 <option value="{{ cid }}">{{ cid }} - {{ info.name }}</option>
             {% endfor %}
         </select>
+
+         <div id="current-invoice-info" style="margin-top: 10px; font-size: 14px; color: #333;"></div>
 
         <label for="new_value">Nieuw nummer:</label>
         <input type="number" name="new_value" id="new_value" value="0" min="0" required>
