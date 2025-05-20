@@ -69,6 +69,16 @@
         }
     </style>
 </head>
+    <meta charset="UTF-8">
+    <title>Factuurnummer Resetten</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <script>
+    // ✅ Apply dark mode before page renders
+    if (localStorage.getItem("darkMode") === "true") {
+        document.documentElement.classList.add("dark-mode");
+    }
+    </script>
 <body>
     <h2>Factuurnummer Resetten</h2>
 
@@ -114,14 +124,6 @@
 
     customerSelect.addEventListener("change", updateInfo);
     updateInfo(); // trigger once on load
-</script>
-
-    <script>
-window.onload = function() {
-    if (localStorage.getItem("darkMode") === "true") {
-        document.body.classList.add("dark-mode");
-    }
-};
 </script>
     
 </body>
