@@ -3,6 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Factuurnummer Resetten</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <script>
+    // ✅ Apply dark mode before page renders
+    if (localStorage.getItem("darkMode") === "true") {
+        document.documentElement.classList.add("dark-mode");
+    }
+    </script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -69,16 +78,6 @@
         }
     </style>
 </head>
-    <meta charset="UTF-8">
-    <title>Factuurnummer Resetten</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
-    <script>
-    // ✅ Apply dark mode before page renders
-    if (localStorage.getItem("darkMode") === "true") {
-        document.documentElement.classList.add("dark-mode");
-    }
-    </script>
 <body>
     <h2>Factuurnummer Resetten</h2>
 
@@ -96,7 +95,7 @@
             {% endfor %}
         </select>
 
-         <div id="current-invoice-info" style="margin-top: 10px; font-size: 14px; color: #333;"></div>
+        <div id="current-invoice-info" style="margin-top: 10px; font-size: 14px; color: #333;"></div>
 
         <label for="new_value">Nieuw nummer:</label>
         <input type="number" name="new_value" id="new_value" value="0" min="0" required>
@@ -107,8 +106,8 @@
     <div class="nav">
         <a href="{{ url_for('index') }}">&#8592; Terug naar Hoofdpagina</a>
     </div>
-    
-<script>
+
+    <script>
     const log = {{ invoice_log | tojson }};
     const customerSelect = document.getElementById("customer_id");
     const infoDiv = document.getElementById("current-invoice-info");
@@ -124,7 +123,6 @@
 
     customerSelect.addEventListener("change", updateInfo);
     updateInfo(); // trigger once on load
-</script>
-    
+    </script>
 </body>
 </html>
