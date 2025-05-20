@@ -3,6 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Klant Toevoegen</title>
+
+    <!-- Apply dark mode before render -->
+    <script>
+    if (localStorage.getItem("darkMode") === "true") {
+        document.documentElement.classList.add("dark-mode");
+    }
+    </script>
+
+    <!-- Load your main stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -76,13 +87,5 @@
     </form>
 
     <a href="/">&#8592; Terug naar hoofdmenu</a>
-    <script>
-window.onload = function() {
-    if (localStorage.getItem("darkMode") === "true") {
-        document.body.classList.add("dark-mode");
-    }
-};
-</script>
-
 </body>
 </html>
