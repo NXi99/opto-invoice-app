@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Bedrijven</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 40px auto; }
+        a.btn { display: inline-block; padding: 8px 12px; background: #eee; border: 1px solid #ccc; border-radius: 6px; text-decoration: none; color: #333; margin-right: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #f7f7f7; }
+    </style>
+</head>
+<body>
+    <h1>Bedrijven</h1>
+    <p>
+        <a class="btn" href="{{ url_for('index') }}">← Terug naar Factuur</a>
+        <a class="btn" href="{{ url_for('add_company') }}">Bedrijf Toevoegen</a>
+        <a class="btn" href="{{ url_for('edit_company') }}">Bedrijf Bewerken of Verwijderen</a>
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Naam</th>
+                <th>Adresregel 1</th>
+                <th>Adresregel 2</th>
+                <th>KVK</th>
+                <th>BTW</th>
+                <th>IBAN</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for coid, info in companies.items() %}
+            <tr>
+                <td>{{ coid }}</td>
+                <td>{{ info.name }}</td>
+                <td>{{ info.address_line1 }}</td>
+                <td>{{ info.address_line2 }}</td>
+                <td>{{ info.kvk }}</td>
+                <td>{{ info.btw }}</td>
+                <td>{{ info.iban }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
