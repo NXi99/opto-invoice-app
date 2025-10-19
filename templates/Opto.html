@@ -99,16 +99,19 @@
     <h1>Factuur</h1>
 
     <div class="header-row">
-        <div class="header-left">
-            <strong>Opto Optiek B.V.</strong><br>
-            Schout Saelberngenplantsoen 10<br>
-            5911 EN Panningen
-        </div>
-        <div class="header-right">
-            <strong>Factuurdatum:</strong><br>
-            {{ invoice_date }}
+    <div class="header-left">
+        <strong>{{ company_name }}</strong><br>
+        {{ company_address_line1 }}<br>
+        {{ company_address_line2 }}
+        <div class="meta">
+            KVK: {{ company_kvk }} &nbsp;|&nbsp; BTW: {{ company_btw }} &nbsp;|&nbsp; IBAN: {{ company_iban }}
         </div>
     </div>
+    <div class="header-right">
+        <strong>Factuurdatum:</strong><br>
+        {{ invoice_date }}
+    </div>
+</div>
 
     <div class="divider"></div>
 
@@ -144,11 +147,6 @@
         </tbody>
     </table>
 
-    <!-- Footer block starts here -->
-<div style="page-break-inside: avoid; margin-top: 650px; font-size: 12px; text-align: center; color: #555;">
-    Opto Optiek B.V., Schout Saelberngenplantsoen 10, 5911 EN Panningen<br>
-    BTW.NO. NL856694691B01 | KVK.NO: 66780241 | NL25 INGB 0733738028
-</div>
 <!-- Footer block ends here -->
 
 </body>
