@@ -123,7 +123,7 @@ def generate():
         "company_iban": co_info.get("iban", ""),
     }
 
-    html = render_template("opto.html", **context)
+    html = render_template("Opto.html", **context)
     footer_html = render_template("footer.html", **context)
 
     # Footer temp file for wkhtmltopdf footer-html option
