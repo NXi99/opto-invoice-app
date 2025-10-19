@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -9,12 +10,12 @@
             text-align: center;
             margin: 0;
             padding: 0;
-            border: 1px solid red;
         }
+        .line { margin: 2px 0; }
     </style>
 </head>
 <body>
-    Opto Optiek B.V., Schout Saelberngenplantsoen 10, 5911 EN Panningen<br>
-    BTW.NO. NL856694691B01 | KVK.NO: 66780241 | NL25 INGB 0733738028
+    <div class="line">{{ company_name }}, {{ company_address_line1 }}, {{ company_address_line2 }}</div>
+    <div class="line">BTW: {{ company_btw }} | KVK: {{ company_kvk }} | {{ company_iban }}</div>
 </body>
 </html>
