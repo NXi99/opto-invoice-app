@@ -12,8 +12,7 @@ from utils import (
 import json
 import pdfkit
 import os
-wkhtml_path = os.environ.get("WKHTMLTOPDF_PATH", "/usr/local/bin/wkhtmltopdf")
-config = pdfkit.configuration(wkhtmltopdf=wkhtml_path)
+
 
 
 app = Flask(__name__)
