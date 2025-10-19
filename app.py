@@ -1,10 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file
-import json
-import pdfkit
 from pathlib import Path
 from datetime import datetime
 from io import BytesIO
-
 # Local utilities
 from utils import (
     load_customers, save_customers,
@@ -12,6 +9,12 @@ from utils import (
     load_invoice_log, save_invoice_log, get_invoice_counter_scoped,
     update_description_cache
 )
+import json
+import pdfkit
+import os
+wkhtml_path = os.environ.get("WKHTMLTOPDF_PATH", "/usr/local/bin/wkhtmltopdf")
+config = pdfkit.configuration(wkhtmltopdf=wkhtml_path)
+
 
 app = Flask(__name__)
 app.secret_key = 'opto-secret-key'
