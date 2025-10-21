@@ -10,88 +10,28 @@
             line-height: 1.5;
             margin: 10mm 20mm 10mm 20mm;
         }
+        h1 { text-align: center; font-size: 32px; }
 
-        h1 {
-            text-align: center;
-            font-size: 32px;
-        }
+        .header-row { display: table; width: 100%; table-layout: fixed; margin-bottom: 25px; }
+        .header-left { display: table-cell; vertical-align: top; width: 70%; }
+        .header-right { display: table-cell; vertical-align: top; width: 30%; text-align: right; white-space: nowrap; }
 
-        .header-row {
-            display: table;
-            width: 100%;
-            table-layout: fixed;
-            margin-bottom: 25px;
-        }
+        .divider { border-top: 2px solid #000; margin: 25px 0; }
 
-        .header-left {
-            display: table-cell;
-            vertical-align: top;
-            width: 70%;
-        }
+        table { width: 100%; border-collapse: collapse; margin-top: 100px; page-break-inside: avoid; }
+        th, td { border: 1px solid #444; padding: 10px; text-align: left; }
+        td:first-child { text-align: left; }
+        td:nth-child(2), td:nth-child(3), td:nth-child(4) { text-align: right; }
+        th { background-color: #f0f0f0; }
 
-        .header-right {
-            display: table-cell;
-            vertical-align: top;
-            width: 30%;
-            text-align: right;
-            white-space: nowrap;
-        }
+        @page { size: A4; margin: 20mm 20mm 20mm 20mm; }
 
-        .divider {
-            border-top: 2px solid #000;
-            margin: 25px 0;
-        }
+        .customer-row { display: table; table-layout: fixed; width: 100%; margin-bottom: 25px; }
+        .customer-left { display: table-cell; vertical-align: top; width: 70%; }
+        .customer-right { display: table-cell; vertical-align: top; width: 30%; text-align: right; white-space: nowrap; }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 100px;
-            page-break-inside: avoid;
-        }
-
-        th, td {
-            border: 1px solid #444;
-            padding: 10px;
-            text-align: left;
-        }
-
-        td:first-child {
-           text-align: left;
-         }
-
-        td:nth-child(2), td:nth-child(3), td:nth-child(4) {
-           text-align: right;
-        }
-
-        th {
-            background-color: #f0f0f0;
-        }
-
-        @page {
-            size: A4;
-            margin: 20mm 20mm 20mm 20mm;
-        }
-
-        .customer-row {
-            display: table;
-            table-layout: fixed;
-            width: 100%;
-            margin-bottom: 25px;
-        }
-
-        .customer-left {
-            display: table-cell;
-            vertical-align: top;
-            width: 70%;
-        }
-
-        .customer-right {
-            display: table-cell;
-            vertical-align: top;
-            width: 30%;
-            text-align: right;
-            white-space: nowrap;
-        }
+        /* Optional small meta line under company header */
+        .meta { margin-top: 6px; color: #444; font-size: 13px; }
     </style>
 </head>
 <body>
@@ -99,19 +39,16 @@
     <h1>Factuur</h1>
 
     <div class="header-row">
-    <div class="header-left">
-        <strong>{{ company_name }}</strong><br>
-        {{ company_address_line1 }}<br>
-        {{ company_address_line2 }}
-        <div class="meta">
-            KVK: {{ company_kvk }} &nbsp;|&nbsp; BTW: {{ company_btw }} &nbsp;|&nbsp; IBAN: {{ company_iban }}
+        <div class="header-left">
+            <strong>{{ company_name }}</strong><br>
+            {{ company_address_line1 }}<br>
+            {{ company_address_line2 }}
+        </div>
+        <div class="header-right">
+            <strong>Factuurdatum:</strong><br>
+            {{ invoice_date }}
         </div>
     </div>
-    <div class="header-right">
-        <strong>Factuurdatum:</strong><br>
-        {{ invoice_date }}
-    </div>
-</div>
 
     <div class="divider"></div>
 
@@ -146,7 +83,12 @@
         </tbody>
     </table>
 
-<!-- Footer block ends here -->
+    <!-- Footer block starts here -->
+    <div style="page-break-inside: avoid; margin-top: 650px; font-size: 12px; text-align: center; color: #555;">
+        {{ company_name }}, {{ company_address_line1 }}, {{ company_address_line2 }}<br>
+        BTW.NO. {{ company_btw }} | KVK.NO: {{ company_kvk }} | {{ company_iban }}
+    </div>
+    <!-- Footer block ends here -->
 
 </body>
 </html>
