@@ -29,6 +29,13 @@ COMPANIES_FILE = DATA_DIR / "companies.json"
 LOG_FILE = DATA_DIR / "invoice_log.json"
 DESC_CACHE_FILE = DATA_DIR / "recent_descriptions.json"
 
+@app.before_first_request
+def bootstrap_data():
+    # Ensure companies.json exists with a default record
+    companies = load_companies(COMPANIES_FILE)
+    if not companies:
+        ensure_default_company(COMPANIES_FILE)
+
 # === Home ===
 @app.route("/")
 def index():
