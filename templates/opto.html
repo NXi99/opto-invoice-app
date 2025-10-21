@@ -86,11 +86,11 @@
 <!-- Footer block starts here -->
 <div style="page-break-inside: avoid; margin-top: 650px; font-size: 12px; text-align: center; color: #555;">
     {{ company_name }}, {{ company_address_line1 }}, {{ company_address_line2 }}<br>
-    {% set footer_items = [] %}
-    {% if company_btw %}{% set _ = footer_items.append('BTW.NO. ' ~ company_btw) %}{% endif %}
-    {% if company_kvk %}{% set _ = footer_items.append('KVK.NO: ' ~ company_kvk) %}{% endif %}
-    {% if company_iban %}{% set _ = footer_items.append(company_iban) %}{% endif %}
-    {{ footer_items | join(' | ') }}
+    {%- set parts = [] -%}
+    {%- if company_btw %}{% set _ = parts.append('BTW.NO. ' ~ company_btw) %}{% endif -%}
+    {%- if company_kvk %}{% set _ = parts.append('KVK.NO: ' ~ company_kvk) %}{% endif -%}
+    {%- if company_iban %}{% set _ = parts.append(company_iban) %}{% endif -%}
+    {{ parts | join(' | ') }}
 </div>
 <!-- Footer block ends here -->
 
