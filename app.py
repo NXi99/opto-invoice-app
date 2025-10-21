@@ -14,7 +14,6 @@ import pdfkit
 import os
 
 
-
 app = Flask(__name__)
 app.secret_key = 'opto-secret-key'
 
@@ -29,12 +28,16 @@ COMPANIES_FILE = DATA_DIR / "companies.json"
 LOG_FILE = DATA_DIR / "invoice_log.json"
 DESC_CACHE_FILE = DATA_DIR / "recent_descriptions.json"
 
-@app.before_first_request
-def bootstrap_data():
-    # Ensure companies.json exists with a default record
+# ---- Bootstrap seed (Flask 3.x friendly) ----
+# Run once at import time so it works on Render + gunicorn
+try:
     companies = load_companies(COMPANIES_FILE)
     if not companies:
         ensure_default_company(COMPANIES_FILE)
+except Exception as e:
+    # Non-fatal: just log to stderr
+    print(f"[bootstrap] Warning while ensuring default company: {e}")
+
 
 # === Home ===
 @app.route("/")
