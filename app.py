@@ -18,10 +18,15 @@ import os
 app = Flask(__name__)
 app.secret_key = 'opto-secret-key'
 
-DATA_DIR = Path(".")
+# Use persistent disk path if provided, otherwise current dir
+DATA_DIR = Path(os.getenv("DATA_DIR", "."))
+
+# Make sure the directory exists at runtime (safe if already exists)
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+
 CUSTOMERS_FILE = DATA_DIR / "customers.json"
-COMPANIES_FILE = DATA_DIR / "companies.json"          # New: companies store
-LOG_FILE = DATA_DIR / "invoice_log.json"              # Reused, but keys are now scoped by company+customer+year
+COMPANIES_FILE = DATA_DIR / "companies.json"
+LOG_FILE = DATA_DIR / "invoice_log.json"
 DESC_CACHE_FILE = DATA_DIR / "recent_descriptions.json"
 
 # === Home ===
