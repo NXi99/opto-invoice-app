@@ -14,7 +14,8 @@ def load_customers(path):
     return {}
 
 def save_customers(path, data):
-    """Persist customers.json."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, 'w') as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
 
@@ -30,7 +31,8 @@ def load_companies(path):
     return {}
 
 def save_companies(path, data):
-    """Persist companies.json."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, 'w') as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
 
@@ -70,7 +72,8 @@ def load_invoice_log(path):
     return {}
 
 def save_invoice_log(path, log):
-    """Persist invoice_log.json."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, 'w') as f:
         json.dump(log, f, indent=4, ensure_ascii=False)
 
